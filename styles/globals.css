@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lake focus-visible:ring-offset-2;
+}
+
+.main-gradient {
+  background: radial-gradient(circle at top left, rgba(29, 78, 216, 0.08), transparent 55%),
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.08), transparent 55%);
+}

@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum Role {
+  PATIENT
+  NURSE
+  DOCTOR
+  DRIVER
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  MISSED
+  CANCELLED
+}
+
+enum ReferralStatus {
+  CREATED
+  SCHEDULED
+  COMPLETED
+  ESCALATED
+}
+
+enum TransportStatus {
+  REQUESTED
+  ASSIGNED
+  PICKED_UP
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      Role
+  patient   Patient?
+  createdAt DateTime @default(now())
+}
+
+model Patient {
+  id           String        @id @default(cuid())
+  name         String
+  age          Int
+  location     String
+  userId       String?       @unique
+  user         User?         @relation(fields: [userId], references: [id])
+  appointments Appointment[]
+  referrals    Referral[]
+  transports   TransportRequest[]
+  followUps    FollowUpTask[]
+}
+
+model Appointment {
+  id        String            @id @default(cuid())
+  patientId String
+  patient   Patient           @relation(fields: [patientId], references: [id])
+  clinician String
+  time      String
+  status    AppointmentStatus
+  createdAt DateTime          @default(now())
+}
+
+model Referral {
+  id        String        @id @default(cuid())
+  patientId String
+  patient   Patient       @relation(fields: [patientId], references: [id])
+  type      String
+  status    ReferralStatus
+  createdAt DateTime      @default(now())
+}
+
+model TransportRequest {
+  id         String           @id @default(cuid())
+  patientId  String
+  patient    Patient          @relation(fields: [patientId], references: [id])
+  pickupTime String
+  status     TransportStatus
+  assignment RideAssignment?
+  createdAt  DateTime         @default(now())
+}
+
+model RideAssignment {
+  id          String           @id @default(cuid())
+  driverName  String
+  requestId   String           @unique
+  request     TransportRequest @relation(fields: [requestId], references: [id])
+  createdAt   DateTime         @default(now())
+}
+
+model FollowUpTask {
+  id        String   @id @default(cuid())
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  reason    String
+  status    String
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  message   String
+  tone      String
+  createdAt DateTime @default(now())
+}

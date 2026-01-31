@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+* {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lake focus-visible:ring-offset-2;
+}
+
+.main-gradient {
+  background: radial-gradient(circle at top left, rgba(29, 78, 216, 0.14), transparent 55%),
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 55%),
+    linear-gradient(120deg, rgba(15, 23, 42, 0.02), transparent 40%);
+}
+
+.glass-panel {
+  @apply rounded-[32px] border border-white/40 bg-white/80 backdrop-blur-xl shadow-soft;
+}
